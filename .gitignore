@@ -8,7 +8,6 @@ vc140.pdb
 x64/
 obj/
 .idea/
-CMakeLists.txt
 kangaroo
 cmake-build-debug/
 *.prf
