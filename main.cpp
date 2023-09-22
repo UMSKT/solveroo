@@ -172,6 +172,10 @@ int main(int argc, char* argv[]) {
   printf("Kangaroo v" RELEASE "\n");
 #endif
 
+#ifdef WITHGPU
+  printf("Supports GPU acceleration\n");
+#endif
+
   // Global Init
   Timer::Init();
   rseed(Timer::getSeed32());
