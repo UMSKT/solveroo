@@ -6,6 +6,7 @@ Kangaroo.VC.opendb
 Kangaroo.sdf
 vc140.pdb
 x64/
+build/
 obj/
 .idea/
 kangaroo

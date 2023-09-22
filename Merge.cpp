@@ -23,7 +23,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <algorithm>
-#ifndef WIN64
+#ifndef _WIN64
 #include <dirent.h>
 #include <pthread.h>
 #endif
@@ -159,7 +159,7 @@ bool Kangaroo::MergeWork(std::string& file1,std::string& file2,std::string& dest
 
   t0 = Timer::get_tick();
 
-#ifndef WIN64
+#ifndef _WIN64
   setvbuf(stdout, NULL, _IONBF, 0);
 #endif
 
@@ -230,7 +230,7 @@ bool Kangaroo::MergeWork(std::string& file1,std::string& file2,std::string& dest
   }
 
   if(printStat) {
-#ifdef WIN64
+#ifdef _WIN64
     ::printf("Dead kangaroo: %I64d\n",collisionInSameHerd);
 #else
     ::printf("Dead kangaroo: %" PRId64 "\n",collisionInSameHerd);
@@ -256,7 +256,7 @@ void Kangaroo::MergeDir(std::string& dirName,std::string& dest) {
 
   vector<File> listFiles;
 
-#ifdef WIN64
+#ifdef _WIN64
   WIN32_FIND_DATA ffd;
   HANDLE hFind;
 

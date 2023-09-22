@@ -225,7 +225,7 @@ void Int::DivStep62(Int* u,Int* v,int64_t* eta,int* pos,int64_t* uu,int64_t* uv,
   __m128i _v;
   __m128i _t;
 
-#ifdef WIN64
+#ifdef _WIN64
   _u.m128i_u64[0] = 1;
   _u.m128i_u64[1] = 0;
   _v.m128i_u64[0] = 0;
@@ -262,7 +262,7 @@ void Int::DivStep62(Int* u,Int* v,int64_t* eta,int* pos,int64_t* uu,int64_t* uv,
 
   }
 
-#ifdef WIN64
+#ifdef _WIN64
   *uu = _u.m128i_u64[0];
   *uv = _u.m128i_u64[1];
   *vu = _v.m128i_u64[0];
@@ -872,7 +872,7 @@ void Int::MontgomeryMult(Int *a, Int *b) {
 
 void Int::ModMulK1(Int *a, Int *b) {
 
-#ifndef WIN64
+#ifndef _WIN64
 #if (__GNUC__ > 7) || (__GNUC__ == 7 && (__GNUC_MINOR__ > 2))
   unsigned char c;
 #else
@@ -951,7 +951,7 @@ void Int::ModMulK1(Int *a, Int *b) {
 
 void Int::ModMulK1(Int *a) {
 
-#ifndef WIN64
+#ifndef _WIN64
 #if (__GNUC__ > 7) || (__GNUC__ == 7 && (__GNUC_MINOR__ > 2))
   unsigned char c;
 #else
@@ -1029,7 +1029,7 @@ void Int::ModMulK1(Int *a) {
 
 void Int::ModSquareK1(Int *a) {
 
-#ifndef WIN64
+#ifndef _WIN64
 #if (__GNUC__ > 7) || (__GNUC__ == 7 && (__GNUC_MINOR__ > 2))
   unsigned char c;
 #else

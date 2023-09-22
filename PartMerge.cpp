@@ -23,7 +23,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <algorithm>
-#ifndef WIN64
+#ifndef _WIN64
 #include <dirent.h>
 #include <pthread.h>
 #include <sys/stat.h>
@@ -60,7 +60,7 @@ FILE * Kangaroo::OpenPart(std::string& partName,char *mode,int i,bool tmpPart) {
 
 void Kangaroo::CreateEmptyPartWork(std::string& partName) {
 
-#ifdef WIN64
+#ifdef _WIN64
 
   WIN32_FIND_DATA ffd;
   HANDLE hFind;
@@ -183,14 +183,14 @@ bool Kangaroo::MergePartition(TH_PARAM* p) {
 
 }
 // Threaded proc
-#ifdef WIN64
+#ifdef _WIN64
 extern DWORD WINAPI _mergeThread(LPVOID lpParam);
 #else
 extern void* _mergeThread(void* lpParam);
 #endif
 
 // Threaded proc
-#ifdef WIN64
+#ifdef _WIN64
 DWORD WINAPI _mergePartThread(LPVOID lpParam) {
 #else
 void* _mergePartThread(void* lpParam) {
@@ -356,7 +356,7 @@ bool Kangaroo::MergeWorkPartPart(std::string& part1Name,std::string& part2Name) 
   int nbThread = (int)pow(2.0,l2);
   if(nbThread > 16) nbThread = 16;
 
-#ifndef WIN64
+#ifndef _WIN64
   setvbuf(stdout,NULL,_IONBF,0);
 #endif
 
@@ -404,7 +404,7 @@ bool Kangaroo::MergeWorkPartPart(std::string& part1Name,std::string& part2Name) 
 
   } else {
 
-#ifdef WIN64
+#ifdef _WIN64
     ::printf("Dead kangaroo: %I64d\n",collisionInSameHerd);
 #else
     ::printf("Dead kangaroo: %" PRId64 "\n",collisionInSameHerd);
@@ -414,7 +414,7 @@ bool Kangaroo::MergeWorkPartPart(std::string& part1Name,std::string& part2Name) 
 
   }
 
-#ifdef WIN64
+#ifdef _WIN64
   ::printf("Dead kangaroo: %I64d\n",collisionInSameHerd);
 #else
   ::printf("Dead kangaroo: %" PRId64 "\n",collisionInSameHerd);
@@ -534,7 +534,7 @@ bool Kangaroo::MergeWorkPart(std::string& partName,std::string& file2,bool print
   uint32_t v1;
   uint32_t v2;
 
-#ifndef WIN64
+#ifndef _WIN64
   setvbuf(stdout,NULL,_IONBF,0);
 #endif
 
@@ -723,7 +723,7 @@ bool Kangaroo::MergeWorkPart(std::string& partName,std::string& file2,bool print
 
   } else {
 
-#ifdef WIN64
+#ifdef _WIN64
     ::printf("Dead kangaroo: %I64d\n",collisionInSameHerd);
 #else
     ::printf("Dead kangaroo: %" PRId64 "\n",collisionInSameHerd);
@@ -734,7 +734,7 @@ bool Kangaroo::MergeWorkPart(std::string& partName,std::string& file2,bool print
   }
 
   if(printStat) {
-#ifdef WIN64
+#ifdef _WIN64
     ::printf("Dead kangaroo: %I64d\n",collisionInSameHerd);
 #else
     ::printf("Dead kangaroo: %" PRId64 "\n",collisionInSameHerd);

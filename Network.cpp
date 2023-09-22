@@ -24,7 +24,7 @@
 #include <math.h>
 #include <algorithm>
 #include <signal.h>
-#ifndef WIN64
+#ifndef _WIN64
 #include <pthread.h>
 #else
 #include "WindowsErrors.h"
@@ -63,7 +63,7 @@ static SOCKET serverSock = 0;
 #define SERVER_BACKUP        2
 
 
-#ifdef WIN64
+#ifdef _WIN64
 
 #define close_socket(s) closesocket(s)
 
@@ -110,7 +110,7 @@ void sig_handler(int signo) {
   if(signo == SIGINT) {
     ::printf("\nTerminated\n");
     if(serverSock>0) close_socket(serverSock);
-#ifdef WIN64
+#ifdef _WIN64
     WSACleanup();
 #endif
     exit(0);
@@ -136,7 +136,7 @@ int Kangaroo::WaitFor(SOCKET sock,int timeout,int mode) {
 
   do
     result = select((int)sock + 1,rd,wr,NULL,&tmout);
-#ifdef WIN64
+#ifdef _WIN64
   while(result < 0 && WSAGetLastError() == WSAEINTR);
 #else
   while(result < 0 && errno == EINTR);
@@ -167,7 +167,7 @@ int Kangaroo::Write(SOCKET sock,char *buf,int bufsize,int timeout) {
     // Write
     do
       written = send(sock,buf,bufsize,0);
-#ifdef WIN64
+#ifdef _WIN64
     while(written == -1 && WSAGetLastError() == WSAEINTR);
 #else
     while(written == -1 && errno == EINTR);
@@ -210,7 +210,7 @@ int Kangaroo::Read(SOCKET sock,char *buf,int bufsize,int timeout) { // Timeout i
     // Read
     do
       rd = recv(sock,buf,bufsize,0);
-#ifdef WIN64
+#ifdef _WIN64
     while(rd == -1 && WSAGetLastError() == WSAEINTR);
 #else
     while(rd == -1 && errno == EINTR);
@@ -240,7 +240,7 @@ int Kangaroo::Read(SOCKET sock,char *buf,int bufsize,int timeout) { // Timeout i
 
 void Kangaroo::InitSocket() {
 
-#ifdef WIN64
+#ifdef _WIN64
   // connect to Winscok DLL
   WSADATA WSAData;
   int err = WSAStartup(MAKEWORD(2,2),&WSAData);
@@ -612,7 +612,7 @@ bool Kangaroo::HandleRequest(TH_PARAM *p) {
 }
 
 // Threaded proc
-#ifdef WIN64
+#ifdef _WIN64
 DWORD WINAPI _acceptThread(LPVOID lpParam) {
 #else
 void *_acceptThread(void *lpParam) {
@@ -628,7 +628,7 @@ void *_acceptThread(void *lpParam) {
   return 0;
 }
 
-#ifdef WIN64
+#ifdef _WIN64
 DWORD WINAPI _processServer(LPVOID lpParam) {
 #else
 void *_processServer(void *lpParam) {
@@ -660,7 +660,7 @@ void Kangaroo::AcceptConnections(SOCKET server_soc) {
       ::memset(p,0,sizeof(TH_PARAM));
       char info[256];
       ::sprintf(info,"%s:%d",inet_ntoa(client_add.sin_addr),ntohs(client_add.sin_port));
-#ifdef WIN64
+#ifdef _WIN64
       p->clientInfo = ::_strdup(info);
 #else
       p->clientInfo = ::strdup(info);
@@ -752,7 +752,7 @@ void Kangaroo::RunServer() {
 
   AcceptConnections(serverSock);
 
-#ifdef WIN64
+#ifdef _WIN64
   WSACleanup();
 #endif
 
@@ -803,7 +803,7 @@ bool Kangaroo::ConnectToServer(SOCKET *retSock) {
   }
 
   // Use non blocking socket
-#ifdef WIN64
+#ifdef _WIN64
   unsigned long iMode = 0;
   if(ioctlsocket(sock,FIONBIO,&iMode) != 0) {
 #else
@@ -822,7 +822,7 @@ bool Kangaroo::ConnectToServer(SOCKET *retSock) {
 
   int connectStatus = connect(sock,(struct sockaddr *)&server,sizeof(server));
 
-#ifdef WIN64
+#ifdef _WIN64
   if((connectStatus < 0) && (WSAGetLastError() != WSAEINPROGRESS)) {
 #else
   if((connectStatus < 0) && (errno != EINPROGRESS)) {
@@ -843,7 +843,7 @@ bool Kangaroo::ConnectToServer(SOCKET *retSock) {
 
     // Check connection completion
     int socket_err;
-#ifdef WIN64
+#ifdef _WIN64
     int serrlen = sizeof socket_err;
     if(getsockopt(sock,SOL_SOCKET,SO_ERROR,(char *)&socket_err,&serrlen) != 0) {
 #else

@@ -18,7 +18,7 @@
 #ifndef KANGAROOH
 #define KANGAROOH
 
-#ifdef WIN64
+#ifdef _WIN64
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <winsock2.h>
@@ -43,7 +43,7 @@ typedef int SOCKET;
 #include "SECPK1/IntGroup.h"
 #include "GPU/GPUEngine.h"
 
-#ifdef WIN64
+#ifdef _WIN64
 typedef HANDLE THREAD_HANDLE;
 #define LOCK(mutex) WaitForSingleObject(mutex,INFINITE);
 #define UNLOCK(mutex) ReleaseMutex(mutex);
@@ -207,7 +207,7 @@ private:
   bool SendKangaroosToServer(std::string& fileName,std::vector<int128_t>& kangs);
   bool GetKangaroosFromServer(std::string& fileName,std::vector<int128_t>& kangs);
 
-#ifdef WIN64
+#ifdef _WIN64
   HANDLE ghMutex;
   HANDLE saveMutex;
   THREAD_HANDLE LaunchThread(LPTHREAD_START_ROUTINE func,TH_PARAM *p);

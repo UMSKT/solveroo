@@ -23,7 +23,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <algorithm>
-#ifndef WIN64
+#ifndef _WIN64
 #include <pthread.h>
 #include <sys/stat.h>
 #endif
@@ -35,7 +35,7 @@ using namespace std;
 
 int Kangaroo::FSeek(FILE* stream,uint64_t pos) {
 
-#ifdef WIN64
+#ifdef _WIN64
   return _fseeki64(stream,pos,SEEK_SET);
 #else
   return fseeko(stream,pos,SEEK_SET);
@@ -45,7 +45,7 @@ int Kangaroo::FSeek(FILE* stream,uint64_t pos) {
 
 uint64_t Kangaroo::FTell(FILE* stream) {
 
-#ifdef WIN64
+#ifdef _WIN64
   return (uint64_t)_ftelli64(stream);
 #else
   return (uint64_t)ftello(stream);
@@ -72,7 +72,7 @@ int Kangaroo::IsDir(string dirName) {
 
   bool isDir = 0;
 
-#ifdef WIN64
+#ifdef _WIN64
 
   WIN32_FIND_DATA ffd;
   HANDLE hFind;
@@ -588,7 +588,7 @@ void Kangaroo::WorkInfo(std::string &fName) {
   if(f1 == NULL)
     return;
 
-#ifndef WIN64
+#ifndef _WIN64
   int fd = fileno(f1);
   posix_fadvise(fd,0,0,POSIX_FADV_RANDOM|POSIX_FADV_NOREUSE);
 #endif
@@ -632,7 +632,7 @@ void Kangaroo::WorkInfo(std::string &fName) {
   ::printf("Start     : %s\n",RS1.GetBase16().c_str());
   ::printf("Stop      : %s\n",RE1.GetBase16().c_str());
   ::printf("Key       : %s\n",secp->GetPublicKeyHex(true,k1).c_str());
-#ifdef WIN64
+#ifdef _WIN64
   ::printf("Count     : %I64d 2^%.3f\n",count1,log2(count1));
 #else
   ::printf("Count     : %" PRId64 " 2^%.3f\n",count1,log2(count1));
@@ -641,7 +641,7 @@ void Kangaroo::WorkInfo(std::string &fName) {
   hashTable.PrintInfo();
 
   fread(&nbLoadedWalk,sizeof(uint64_t),1,f1);
-#ifdef WIN64
+#ifdef _WIN64
   ::printf("Kangaroos : %I64d 2^%.3f\n",nbLoadedWalk,log2(nbLoadedWalk));
 #else
   ::printf("Kangaroos : %" PRId64 " 2^%.3f\n",nbLoadedWalk,log2(nbLoadedWalk));

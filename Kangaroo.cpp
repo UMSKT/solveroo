@@ -23,7 +23,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <algorithm>
-#ifndef WIN64
+#ifndef _WIN64
 #include <pthread.h>
 #endif
 
@@ -68,7 +68,7 @@ Kangaroo::Kangaroo(Secp256K1 *secp,int32_t initDPSize,bool useGpu,string &workFi
   CPU_GRP_SIZE = 1024;
 
   // Init mutex
-#ifdef WIN64
+#ifdef _WIN64
   ghMutex = CreateMutex(NULL,FALSE,NULL);
   saveMutex = CreateMutex(NULL,FALSE,NULL);
 #else
@@ -163,7 +163,7 @@ void Kangaroo::SetDP(int size) {
     dMask = ~dMask;
   }
 
-#ifdef WIN64
+#ifdef _WIN64
   ::printf("DP size: %d [0x%016I64X]\n",dpSize,dMask);
 #else
   ::printf("DP size: %d [0x%" PRIx64 "]\n",dpSize,dMask);
@@ -645,7 +645,7 @@ void Kangaroo::SolveKeyGPU(TH_PARAM *ph) {
 
 // ----------------------------------------------------------------------------
 
-#ifdef WIN64
+#ifdef _WIN64
 DWORD WINAPI _SolveKeyCPU(LPVOID lpParam) {
 #else
 void *_SolveKeyCPU(void *lpParam) {
@@ -655,7 +655,7 @@ void *_SolveKeyCPU(void *lpParam) {
   return 0;
 }
 
-#ifdef WIN64
+#ifdef _WIN64
 DWORD WINAPI _SolveKeyGPU(LPVOID lpParam) {
 #else
 void *_SolveKeyGPU(void *lpParam) {

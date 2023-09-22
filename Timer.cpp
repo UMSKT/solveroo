@@ -19,7 +19,7 @@
 
 static const char *prefix[] = { "","Kilo","Mega","Giga","Tera","Peta","Hexa" };
 
-#ifdef WIN64
+#ifdef _WIN64
 
 LARGE_INTEGER Timer::perfTickStart;
 double Timer::perfTicksPerSec;
@@ -37,7 +37,7 @@ time_t Timer::tickStart;
 
 void Timer::Init() {
 
-#ifdef WIN64
+#ifdef _WIN64
   QueryPerformanceFrequency(&qwTicksPerSec);
   QueryPerformanceCounter(&perfTickStart);
   perfTicksPerSec = (double)qwTicksPerSec.QuadPart;
@@ -49,7 +49,7 @@ void Timer::Init() {
 
 double Timer::get_tick() {
 
-#ifdef WIN64
+#ifdef _WIN64
   LARGE_INTEGER t, dt;
   QueryPerformanceCounter(&t);
   dt.QuadPart = t.QuadPart - perfTickStart.QuadPart;
@@ -68,7 +68,7 @@ uint32_t Timer::getSeed32() {
 
 uint32_t Timer::getPID() {
 
-#ifdef WIN64
+#ifdef _WIN64
   return GetCurrentProcessId();
 #else
   return (uint32_t)getpid();
@@ -82,7 +82,7 @@ std::string Timer::getSeed(int size) {
   char tmp[3];
   unsigned char *buff = (unsigned char *)malloc(size);
 
-#ifdef WIN64
+#ifdef _WIN64
   
   HCRYPTPROV   hCryptProv = NULL;
   LPCSTR UserName = "KeyContainer";
@@ -170,7 +170,7 @@ void Timer::printResult(char *unit, int nbTry, double t0, double t1) {
 
 int Timer::getCoreNumber() {
 
-#ifdef WIN64
+#ifdef _WIN64
   SYSTEM_INFO sysinfo;
   GetSystemInfo(&sysinfo);
   return sysinfo.dwNumberOfProcessors;
@@ -182,7 +182,7 @@ int Timer::getCoreNumber() {
 
 void Timer::SleepMillis(uint32_t millis) {
 
-#ifdef WIN64
+#ifdef _WIN64
   Sleep(millis);
 #else
   usleep(millis*1000);

@@ -15,7 +15,7 @@
 * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef WIN64
+#ifndef _WIN64
 #include <unistd.h>
 #include <stdio.h>
 #endif

@@ -20,7 +20,7 @@
 
 #include <time.h>
 #include <string>
-#ifdef WIN64
+#ifdef _WIN64
 #include <windows.h>
 #endif
 
@@ -38,7 +38,7 @@ public:
   static uint32_t getPID();
   static std::string getTS();
 
-#ifdef WIN64
+#ifdef _WIN64
   static LARGE_INTEGER perfTickStart;
   static double perfTicksPerSec;
   static LARGE_INTEGER qwTicksPerSec;

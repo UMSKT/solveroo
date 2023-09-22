@@ -18,7 +18,7 @@
 #include "HashTable.h"
 #include <stdio.h>
 #include <math.h>
-#ifndef WIN64
+#ifndef _WIN64
 #include <string.h>
 #endif
 
@@ -399,7 +399,7 @@ void HashTable::SeekNbItem(FILE* f,bool restorePos) {
 
   Reset();
 
-#ifdef WIN64
+#ifdef _WIN64
   uint64_t org = (uint64_t)_ftelli64(f);
 #else
   uint64_t org = (uint64_t)ftello(f);
@@ -409,7 +409,7 @@ void HashTable::SeekNbItem(FILE* f,bool restorePos) {
 
   if( restorePos ) {
     // Restore position
-#ifdef WIN64
+#ifdef _WIN64
     _fseeki64(f,org,SEEK_SET);
 #else
     fseeko(f,org,SEEK_SET);
@@ -426,7 +426,7 @@ void HashTable::SeekNbItem(FILE* f,uint32_t from,uint32_t to) {
     fread(&E[h].maxItem,sizeof(uint32_t),1,f);
 
     uint64_t hSize = 32ULL * E[h].nbItem;
-#ifdef WIN64
+#ifdef _WIN64
     _fseeki64(f,hSize,SEEK_CUR);
 #else
     fseeko(f,hSize,SEEK_CUR);
@@ -493,7 +493,7 @@ void HashTable::PrintInfo() {
   uint64_t count = GetNbItem();
 
   ::printf("DP Size   : %s\n",GetSizeInfo().c_str());
-#ifdef WIN64
+#ifdef _WIN64
   ::printf("DP Count  : %I64d 2^%.3f\n",count,log2((double)count));
 #else
   ::printf("DP Count  : %" PRId64 " 2^%.3f\n",count,log2(count));

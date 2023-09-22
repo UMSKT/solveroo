@@ -21,7 +21,7 @@
 #include <string>
 #include <vector>
 #include "SECPK1/Point.h"
-#ifdef WIN64
+#ifdef _WIN64
 #include <Windows.h>
 #endif
 

@@ -7,9 +7,6 @@ set(CMAKE_CXX_STANDARD 11)
 # Include CUDA
 find_package(CUDA REQUIRED)
 
-# Variables for build
-set(CCAP 50)
-
 # Add source files
 set(SOURCES
     SECPK1/IntGroup.cpp
@@ -45,6 +42,11 @@ include_directories(${CUDA_INCLUDE_DIRS})
 # Link libraries
 if (NOT MSVC)
     target_link_libraries(kangaroo ${CUDA_LIBRARIES} pthread)
+else()
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+    set(CMAKE_CXX_FLAGS_RELEASE "/MT")
+    set(CMAKE_CXX_FLAGS_DEBUG "/MTd")
+    set(DEBUG ON)
 endif()
 
 # Compiler flags
@@ -59,9 +61,10 @@ endif()
 if (MSVC)
     if (DEBUG)
         target_compile_options(kangaroo PRIVATE /W3 /Zi /EHsc)
+        target_link_libraries(kangaroo ws2_32)
         set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /DEBUG")
     else()
-        target_compile_options(kangaroo PRIVATE /O2 /EHsc)
+        target_compile_options(kangaroo PRIVATE /O3 /EHsc)
     endif()
 else()
     if (DEBUG)

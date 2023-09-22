@@ -21,7 +21,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <algorithm>
-#ifndef WIN64
+#ifndef _WIN64
 #include <pthread.h>
 #endif
 
@@ -29,7 +29,7 @@ using namespace std;
 
 // ----------------------------------------------------------------------------
 
-#ifdef WIN64
+#ifdef _WIN64
 
 THREAD_HANDLE Kangaroo::LaunchThread(LPTHREAD_START_ROUTINE func, TH_PARAM *p) {
   p->obj = this;
@@ -171,7 +171,7 @@ void Kangaroo::ProcessServer() {
   double lastSave = 0;
 
   // Acquire mutex ownership
-#ifndef WIN64
+#ifndef _WIN64
   pthread_mutex_init(&ghMutex, NULL);
   setvbuf(stdout, NULL, _IONBF, 0);
 #else
@@ -247,7 +247,7 @@ void Kangaroo::Process(TH_PARAM *params,std::string unit) {
   double avgGpuKeyRate = 0.0;
   double lastSave = 0;
 
-#ifndef WIN64
+#ifndef _WIN64
   setvbuf(stdout, NULL, _IONBF, 0);
 #endif
 

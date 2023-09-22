@@ -23,7 +23,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <algorithm>
-#ifndef WIN64
+#ifndef _WIN64
 #include <pthread.h>
 #define _strdup strdup
 #endif
@@ -157,7 +157,7 @@ bool Kangaroo::CheckWorkFile(TH_PARAM* p) {
 }
 
 // Threaded proc
-#ifdef WIN64
+#ifdef _WIN64
 DWORD WINAPI _checkPartThread(LPVOID lpParam) {
 #else
 void* _checkPartThread(void* lpParam) {
@@ -168,7 +168,7 @@ void* _checkPartThread(void* lpParam) {
   return 0;
 }
 
-#ifdef WIN64
+#ifdef _WIN64
 DWORD WINAPI _checkWorkThread(LPVOID lpParam) {
 #else
 void* _checkWorkThread(void* lpParam) {
@@ -275,7 +275,7 @@ void Kangaroo::CheckPartition(int nbCore,std::string& partName) {
   ::printf("[%.3f%% OK][%s]\n",O,GetTimeStr(t1 - t0).c_str());
   if(nbWrong>0) {
 
-#ifdef WIN64
+#ifdef _WIN64
     ::printf("DP: %I64d\n",nbDP);
     ::printf("Wrong DP: %I64d\n",nbWrong);
 #else
@@ -293,7 +293,7 @@ void Kangaroo::CheckWorkFile(int nbCore,std::string& fileName) {
   double t1;
   uint32_t v1;
 
-#ifndef WIN64
+#ifndef _WIN64
   setvbuf(stdout,NULL,_IONBF,0);
 #endif
 
@@ -398,7 +398,7 @@ void Kangaroo::CheckWorkFile(int nbCore,std::string& fileName) {
   ::printf("[%.3f%% OK][%s]\n",O,GetTimeStr(t1 - t0).c_str());
   if(nbWrong > 0) {
 
-#ifdef WIN64
+#ifdef _WIN64
     ::printf("DP: %I64d\n",nbDP);
     ::printf("Wrong DP: %I64d\n",nbWrong);
 #else
@@ -571,7 +571,7 @@ void Kangaroo::Check(std::vector<int> gpuId,std::vector<int> gridSize) {
             gpuFound.erase(gpuFound.begin() + j);
           } else {
             ::printf("DP Mismatch:\n");
-#ifdef WIN64
+#ifdef _WIN64
             ::printf("[%d] %s [0x%016I64X]\n",j,gpuFound[j].x.GetBase16().c_str(),gpuFound[j].kIdx);
 #else
             ::printf("[%d] %s [0x%" PRIx64 "]\n",j,gpuFound[j].x.GetBase16().c_str(),gpuFound[j].kIdx);
